@@ -77,8 +77,17 @@ def start_server(python_exe):
     threading.Thread(target=open_browser, daemon=True).start()
     
     # Run uvicorn
+    import os  # Add this at the top of the file if it's not already there
+
     try:
-        subprocess.run([python_exe, "-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8000"], check=True)
+     subprocess.run([
+        python_exe,
+        "-m",
+        "uvicorn",
+        "backend.main:app",
+        "--host", "0.0.0.0",
+        "--port", os.environ.get("PORT", "8000")
+    ])
     except KeyboardInterrupt:
         print("\nServer stopped by user.")
     except Exception as e:
